@@ -34,13 +34,26 @@ const Tree = function(array) {
         }
     }
 
+    function find(node) {
+        let currentRoot = headRoot;
+        while (currentRoot != null && node.data != currentRoot.data) {
+            if (node.data < currentRoot.data)
+                currentRoot = currentRoot.leftChild;
+            else if (node.data > currentRoot.data)
+                currentRoot = currentRoot.rightChild;
+        }
+        return currentRoot;
+    }
+
     let headRoot = buildTree(0, uniq.length - 1);
 
     return {
         headRoot,
-        prettyPrint
+        prettyPrint,
+        find
     }
 }
 
 const bst = Tree([4, 1, 10343, 2, 3, 5555, 3, 2, 3]);
 bst.prettyPrint(bst.headRoot);
+console.log(bst.find(Node(8888)));
