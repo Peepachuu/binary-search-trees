@@ -45,15 +45,38 @@ const Tree = function(array) {
         return currentRoot;
     }
 
+    function insert(node) {
+        let currentRoot = headRoot;
+        while (currentRoot.leftChild != null && currentRoot.rightChild != null) {
+            if (node.data < currentRoot.data)
+                currentRoot = currentRoot.leftChild;
+            else if (node.data > currentRoot.data)
+                currentRoot = currentRoot.rightChild;
+            else if (node.data == currentRoot.data)
+                return ;
+        }
+        if (node.data < currentRoot.data)
+            currentRoot.leftChild = node;
+        else if (node.data > currentRoot.data)
+            currentRoot.rightChild = node;
+    }
+
+    function isBalanced() {
+        
+    }
+
     let headRoot = buildTree(0, uniq.length - 1);
 
     return {
         headRoot,
         prettyPrint,
-        find
+        find,
+        insert
     }
 }
 
 const bst = Tree([4, 1, 10343, 2, 3, 5555, 3, 2, 3]);
 bst.prettyPrint(bst.headRoot);
-console.log(bst.find(Node(8888)));
+console.log(bst.headRoot);
+bst.insertNode(66);
+bst.prettyPrint(bst.headRoot);
