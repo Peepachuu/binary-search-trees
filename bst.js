@@ -61,8 +61,37 @@ const Tree = function(array) {
             currentRoot.rightChild = node;
     }
 
+    function deleteNode(node) {
+        let currentRoot = headRoot;
+        
+    }
+
     function isBalanced() {
         
+    }
+
+    function preorder(callback=false, curRoot) {
+        if (curRoot == null) 
+            return;
+        console.log(curRoot.data);
+        preorder(false, curRoot.leftChild);
+        preorder(false, curRoot.rightChild);
+    }
+
+    function inorder(callback=false, curRoot) {
+        if (curRoot == null) 
+            return;
+        inorder(false, curRoot.leftChild);
+        console.log(curRoot.data);
+        inorder(false, curRoot.rightChild);
+    }
+
+    function postorder(callback=false, curRoot) {
+        if (curRoot == null) 
+            return;
+        postorder(false, curRoot.leftChild);
+        postorder(false, curRoot.rightChild);
+        console.log(curRoot.data);
     }
 
     let headRoot = buildTree(0, uniq.length - 1);
@@ -71,12 +100,16 @@ const Tree = function(array) {
         headRoot,
         prettyPrint,
         find,
-        insert
+        insert,
+        preorder,
+        inorder,
+        postorder
     }
 }
 
 const bst = Tree([4, 1, 10343, 2, 3, 5555, 3, 2, 3]);
 bst.prettyPrint(bst.headRoot);
 console.log(bst.headRoot);
-bst.insertNode(66);
+bst.insert(Node(66));
 bst.prettyPrint(bst.headRoot);
+bst.preorder(false, bst.headRoot);
