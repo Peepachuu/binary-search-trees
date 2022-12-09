@@ -103,6 +103,12 @@ const Tree = function(array) {
             return list;
     }
 
+    function height(node) {
+        if (node == null)
+            return 0;
+        return Math.max(height(node.leftChild) + 1, height(node.rightChild) + 1);
+    }
+
     let headRoot = buildTree(0, uniq.length - 1);
 
     return {
@@ -112,7 +118,8 @@ const Tree = function(array) {
         insert,
         preorder,
         inorder,
-        postorder
+        postorder,
+        height
     }
 }
 
@@ -122,3 +129,4 @@ console.log(bst.headRoot);
 bst.insert(Node(66));
 bst.prettyPrint(bst.headRoot);
 console.log(bst.inorder(false, bst.headRoot, []));
+console.log(bst.height(bst.headRoot.leftChild));
