@@ -70,28 +70,37 @@ const Tree = function(array) {
         
     }
 
-    function preorder(callback=false, curRoot) {
+    function preorder(callback, curRoot, list) {
         if (curRoot == null) 
             return;
-        console.log(curRoot.data);
-        preorder(false, curRoot.leftChild);
-        preorder(false, curRoot.rightChild);
+        callback ? callback(curRoot) : list.push(curRoot.data);
+        preorder(false, curRoot.leftChild, list);
+        preorder(false, curRoot.rightChild, list);
+
+        if (list.length > 0)
+            return list;
     }
 
-    function inorder(callback=false, curRoot) {
+    function inorder(callback, curRoot, list) {
         if (curRoot == null) 
             return;
-        inorder(false, curRoot.leftChild);
-        console.log(curRoot.data);
-        inorder(false, curRoot.rightChild);
+        inorder(false, curRoot.leftChild, list);
+        callback ? callback(curRoot) : list.push(curRoot.data);
+        inorder(false, curRoot.rightChild, list);
+        
+        if (list.length > 0)
+            return list;
     }
 
-    function postorder(callback=false, curRoot) {
+    function postorder(callback, curRoot, list) {
         if (curRoot == null) 
             return;
-        postorder(false, curRoot.leftChild);
-        postorder(false, curRoot.rightChild);
-        console.log(curRoot.data);
+        postorder(false, curRoot.leftChild, list);
+        postorder(false, curRoot.rightChild, list);
+        callback ? callback(curRoot) : list.push(curRoot.data);
+
+        if (list.length > 0)
+            return list;
     }
 
     let headRoot = buildTree(0, uniq.length - 1);
@@ -112,4 +121,4 @@ bst.prettyPrint(bst.headRoot);
 console.log(bst.headRoot);
 bst.insert(Node(66));
 bst.prettyPrint(bst.headRoot);
-bst.preorder(false, bst.headRoot);
+console.log(bst.inorder(false, bst.headRoot, []));
