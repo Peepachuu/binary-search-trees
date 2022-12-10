@@ -1,3 +1,5 @@
+const queue = require("./queue.js");
+
 const Node = function(data=null) {
     let leftChild = null;
     let rightChild = null;
@@ -66,6 +68,20 @@ const Tree = function(array) {
         
     }
 
+    function levelOrder(callback, list=[]) {
+        let currentRoot = headRoot;
+        if (currentRoot == null) return;
+        let q = queue();
+        q.push(currentRoot);
+        while (q.length() != 0) {
+            let cur = q.pop();
+            callback ? callback(cur) : list.push(cur.data);
+            if (cur.leftChild != null) q.push(cur.leftChild);
+            if (cur.rightChild != null) q.push(cur.rightChild); 
+        }
+        return list;
+    }
+
     function isBalanced() {
         
     }
@@ -109,6 +125,19 @@ const Tree = function(array) {
         return Math.max(height(node.leftChild) + 1, height(node.rightChild) + 1);
     }
 
+    function depth(node) {
+        let currentRoot = headRoot;
+        let nodeDepth = 0;
+        while (currentRoot != null && node.data != currentRoot.data) {
+            if (node.data < currentRoot.data)
+                currentRoot = currentRoot.leftChild;
+            else if (node.data > currentRoot.data)
+                currentRoot = currentRoot.rightChild;
+            ++nodeDepth;
+        }
+        return (currentRoot == null ? "Does not exist" :  nodeDepth);
+    }
+
     let headRoot = buildTree(0, uniq.length - 1);
 
     return {
@@ -119,7 +148,9 @@ const Tree = function(array) {
         preorder,
         inorder,
         postorder,
-        height
+        height,
+        depth,
+        levelOrder
     }
 }
 
@@ -129,4 +160,4 @@ console.log(bst.headRoot);
 bst.insert(Node(66));
 bst.prettyPrint(bst.headRoot);
 console.log(bst.inorder(false, bst.headRoot, []));
-console.log(bst.height(bst.headRoot.leftChild));
+console.log(bst.levelOrder(false));

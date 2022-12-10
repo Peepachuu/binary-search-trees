@@ -5,7 +5,7 @@ const queue = function() {
     function pop() {
         if (revData.length == 0) {
             revData = data.reverse();
-            data = [];;
+            data = [];
         }
         return revData.pop();
     }
@@ -14,8 +14,15 @@ const queue = function() {
         data.push(item);
     }
 
+    function length() {
+        return data.length + revData.length;
+    }
+
     return {
         pop,
-        push
+        push,
+        length
     }
 };
+
+module.exports = queue;
