@@ -15,10 +15,10 @@ const Tree = function(array) {
     const uniq = [...new Set(array)];
     uniq.sort((a, b) => {return a - b});
 
-    function buildTree(start, end) {
+    function buildTree(start, end, arr) {
         if (start > end) return null;
         const mid = Math.floor((start + end) / 2);
-        let root = Node(uniq[mid]);
+        let root = Node(arr[mid]);
 
         root.leftChild = buildTree(start, mid - 1);
         root.rightChild = buildTree(mid + 1, end);
@@ -49,11 +49,15 @@ const Tree = function(array) {
 
     function insert(node) {
         let currentRoot = headRoot;
-        while (currentRoot.leftChild != null && currentRoot.rightChild != null) {
-            if (node.data < currentRoot.data)
+        while (true) {
+            if (node.data < currentRoot.data) {
+                if (currentRoot.leftChild == null) break;
                 currentRoot = currentRoot.leftChild;
-            else if (node.data > currentRoot.data)
+            }
+            else if (node.data > currentRoot.data) {
+                if (currentRoot.rightChild == null) break;
                 currentRoot = currentRoot.rightChild;
+            }
             else if (node.data == currentRoot.data)
                 return ;
         }
@@ -83,7 +87,15 @@ const Tree = function(array) {
     }
 
     function isBalanced() {
+        if (headRoot == null) 
+            return false;
         
+        return (Math.abs(height(headRoot.leftChild) - height(headRoot.rightChild)) <= 1);
+    }
+
+    function rebalance() {
+        let arr = levelOrder(false);
+        headRoot = buildTree(0, arr.length - 1, arr);
     }
 
     function preorder(callback, curRoot, list) {
@@ -138,7 +150,7 @@ const Tree = function(array) {
         return (currentRoot == null ? "Does not exist" :  nodeDepth);
     }
 
-    let headRoot = buildTree(0, uniq.length - 1);
+    let headRoot = buildTree(0, uniq.length - 1, uniq);
 
     return {
         headRoot,
@@ -150,14 +162,23 @@ const Tree = function(array) {
         postorder,
         height,
         depth,
-        levelOrder
+        levelOrder,
+        isBalanced,
+        rebalance,
+        deleteNode
     }
 }
 
-const bst = Tree([4, 1, 10343, 2, 3, 5555, 3, 2, 3]);
+const bst = Tree([4, 1, 103, 2, 3, 555, 3, 2, 3]);
 bst.prettyPrint(bst.headRoot);
 console.log(bst.headRoot);
 bst.insert(Node(66));
 bst.prettyPrint(bst.headRoot);
-console.log(bst.inorder(false, bst.headRoot, []));
+
+bst.insert(Node(104));
 console.log(bst.levelOrder(false));
+bst.insert(Node(105));
+bst.insert(Node(106));
+bst.insert(Node(107));
+console.log(bst.levelOrder(false));
+bst.prettyPrint(bst.headRoot);
